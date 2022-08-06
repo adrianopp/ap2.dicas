@@ -1,0 +1,43 @@
+{: Retorna o Ano seguinte e próximo dia útil caso a data informada caia em um fim de semana e pCalcProximoDiaUtil = True}
+class function TAP2Functions.funDataAnoSeguinte(dData: TDateTime; pManterMesIdentico: Boolean; pCalcProximoDiaUtil: Boolean): TDateTime;
+{
+"dData"               = Data incial para o Cálculo
+"pManterMesIdentico"  = Se True, verifica se o Mês é 12 para evitar mudança para o mês 01, fazendo a data de dia útil retroceder, evitando salto do mês se final de ano
+"pCalcProximoDiaUtil" = Se True, valida se a data para o ano seguinte é em dia útil, se não for, avança para a data seguinte, respeitando o parâmetro "pManterMesIdentico"
+}
+var
+vDia, vMes, vAno: Word;
+vDateString: String;
+begin
+  DecodeDate(dData, vAno,vMes, vDia);
+  Inc(vAno);
+  vDateString  := IntToStr(vDia)+'/'+IntToStr(vMes)+'/'+IntToStr(vAno);
+  dData        := StrToDate(vDateString);
+
+  if (pCalcProximoDiaUtil) then
+  begin
+    if (vMes <> 12) then
+    begin
+      if DayOfWeek(dData) = 7 then
+      begin
+        dData := dData + 2
+      end
+      else if DayOfWeek(dData) = 1 then
+      begin
+        dData := dData + 1;
+      end;
+    end
+    else
+    begin
+      if DayOfWeek(dData) = 7 then
+      begin
+        dData := dData - 1
+      end
+      else if DayOfWeek(dData) = 1 then
+      begin
+        dData := dData - 2;
+      end;
+    end
+  end;
+  Result := dData;
+end;
