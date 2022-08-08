@@ -1,0 +1,24 @@
+//Trata String se deve retornar apenas Números ou outros Caracteres
+//pReturnOnlyNumbers = True Retorna apenas números encontrados no parâmetro pString
+class function TAP2Functions.funExtractCharactersOorNumbers(const pString: string; pReturnOnlyNumbers:Boolean = True): String;
+var
+vText : PChar;
+begin
+  vText  := PChar(pString);
+  Result := '';
+
+  while (vText^ <> #0) do
+  begin
+    if pReturnOnlyNumbers then
+    begin
+      if (vText^ in ['0'..'9']) then
+        Result := Result + vText^;
+    end
+    else
+    begin
+      if not (vText^ in ['0'..'9']) then
+        Result := Result + vText^;
+    end;
+    Inc(vText);
+  end;
+end;
