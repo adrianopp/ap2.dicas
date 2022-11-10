@@ -1,0 +1,14 @@
+//Neste evento do DBGrid, é verificado se o valor do campo do DBGrid é identico a um outro valor e se for ele muda a cor da célula correspondente ao field
+evento DrawColumnCell(Sender: TObject; const Rect: TRect; DataCol: Integer; Column: TColumn; State: TGridDrawState);
+begin
+  if (Column.Field.FieldName = 'PRO_DESCRICAO') then //Verificando se o field é o que vamos comparar
+  begin
+    if Pos(UpperCase(Column.Field.Value),UpperCase(DataSet.FieldByName('PRO_DESCRICAO').AsString)) > 0  then // Foi usado um dataset pra comparação
+    begin
+      TDBGrid(Sender).Canvas.Brush.Color:= $000080FF; //Definindo a cor da célula
+      TDBGrid(Sender).Canvas.Font.Color:= clWindowText; //Definindo a cor da fonte da célula
+      TDBGrid(Sender).Canvas.FillRect(Rect); // atribuindo as alterações 
+      TDBGrid(Sender).DefaultDrawColumnCell(Rect, DataCol, Column, State); //atualizando com as alterações acima
+    end;
+  end;
+end;
